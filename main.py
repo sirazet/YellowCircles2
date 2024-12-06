@@ -1,6 +1,13 @@
+
 import sys
 from random import randint
-from PyQt6 import QtWidgets, QtCore, QtGui, uic
+from PyQt6 import QtWidgets, QtGui, uic
+from PyQt6.QtGui import QColor
+
+class UiLoader(QtWidgets.QMainWindow):
+    def __init__(self):
+        super().__init__()
+        uic.loadUi('UI.ui', self)
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -13,13 +20,14 @@ class MainWindow(QtWidgets.QMainWindow):
         diameter = randint(10, 100)
         x = randint(0, self.centralwidget.width() - diameter)
         y = randint(0, self.centralwidget.height() - diameter)
-        self.circles.append((x, y, diameter))
+        color = QColor(randint(0, 255), randint(0, 255), randint(0, 255))
+        self.circles.append((x, y, diameter, color))
         self.update()
 
     def paintEvent(self, event):
         qp = QtGui.QPainter(self)
-        qp.setBrush(QtGui.QColor('yellow'))
-        for x, y, diameter in self.circles:
+        for x, y, diameter, color in self.circles:
+            qp.setBrush(color)
             qp.drawEllipse(x, y, diameter, diameter)
 
 if __name__ == '__main__':
